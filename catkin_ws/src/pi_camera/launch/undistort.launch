@@ -12,6 +12,9 @@
 		<!--<arg name="param_file_name" value="$(arg param_file_name)"/>-->
 	</include>
 
+	<!-- Uncomment following for reading camera info from config file
+	Use it if you need rectification image and don't have camera_info topic in bagfile -->
+
 		<!-- Raw camera_info_reader node -->
 <!--	<remap from="raw_cam_info_reader_node/camera_info" to="camera_node/raw_camera_info"/>-->
 <!--    <remap from="raw_cam_info_reader_node/compressed_image" to="camera_node/image/raw"/>-->

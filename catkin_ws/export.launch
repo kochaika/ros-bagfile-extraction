@@ -3,8 +3,8 @@
   <arg name="bag_name" default="autolab.bag"/>
   <arg name="start" default="0"/>
   <arg name="duration" default="1000"/>
-  <!--<arg name="image_topic" default="/$(arg veh)/camera_node/image/compressed"/>-->
-  <arg name="image_topic" default="/$(arg veh)/camera_node/image"/>
+  <!--  <arg name="image_topic" default="/$(arg veh)/camera_node/image/compressed"/>-->
+  <!--  <arg name="image_topic" default="/$(arg veh)/camera_node/image"/>-->
   <arg name="wheels_cmd_topic" default="/$(arg veh)/wheels_driver_node/wheels_cmd"/>
 
   <include file="$(find pi_camera)/launch/undistort.launch">
@@ -12,12 +12,23 @@
   </include>
 
   <node pkg="rosbag" type="play" name="rosbag" required="true" args="--start=$(arg start) --duration=$(arg duration) $(arg bag_name)"/>
-  <node name="republish" type="republish" pkg="image_transport" output="screen" args="compressed in:=$(arg image_topic) raw out:=camera_out/image" />
+
+      <!--  Use to convert images in image topic from sensor_msgs/CompressedImage to sensor_msgs/CompressedImage
+            Don't needed for rect images, because they will be converted via undistort.launch -->
+<!--  <node name="republish" type="republish" pkg="image_transport" output="screen" args="compressed in:=$(arg image_topic) raw out:=camera_out/image" />-->
+
+      <!--  Extract node needs sensor_msgs/Image messages, NOT sensor_msgs/CompressedImage
+            If you have sensor_msgs/CompressedImage images - convert in via republish node-->
   <node name="extract" pkg="image_view" type="extract_images" respawn="false" required="true" output="screen" cwd="ROS_HOME">
-	<!-- <remap from="image" to="$(arg image_topic)"/> -->
+        <!-- Remap for using original images from images topic -->
+    <!-- <remap from="image" to="$(arg image_topic)"/> -->
+        <!-- Remap for using republished images -->
     <!--  <remap from="image" to="camera_out/image"/>-->
+        <!-- rect images already sensor_msgs/Image  -->
     <remap from="image" to="/$(arg veh)/camera_node/image/rect"/>
   </node>
+
+      <!--  You can write your custom extractor using wheels_cmd_extractor as example-->
   <node name="wheels_cmd_extractor" pkg="wheels_cmd_extractor" type="wheels_cmd_extractor.py" respawn="false" required="true" output="screen" cwd="ROS_HOME">
     <param name="~wheels_cmd_topic" value="$(arg wheels_cmd_topic)"/>
   </node>
