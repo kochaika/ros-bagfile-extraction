@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import os.path
 
 #from duckietown_utils import get_duckiefleet_root
@@ -50,7 +50,7 @@ class CamInfoReader(object):
 
     # from cam_info_reader_node
     def load_camera_info_2(self, filename):
-        stream = file(filename, 'r')
+        stream = open(filename, 'r')
         calib_data = yaml.load(stream)
         cam_info = CameraInfo()
         cam_info.width = calib_data['image_width']

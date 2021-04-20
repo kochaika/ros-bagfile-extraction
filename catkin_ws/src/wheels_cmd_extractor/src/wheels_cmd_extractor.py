@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import rospy
 import csv
 from duckietown_msgs.msg import WheelsCmdStamped
