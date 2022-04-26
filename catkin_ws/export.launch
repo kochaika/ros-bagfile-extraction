@@ -13,7 +13,7 @@
 
   <node pkg="rosbag" type="play" name="rosbag" required="true" args="--start=$(arg start) --duration=$(arg duration) $(arg bag_name)"/>
 
-      <!--  Use to convert images in image topic from sensor_msgs/CompressedImage to sensor_msgs/CompressedImage
+      <!--  Use to convert images in image topic from sensor_msgs/CompressedImage to sensor_msgs/Image
             Don't needed for rect images, because they will be converted via undistort.launch -->
 <!--  <node name="republish" type="republish" pkg="image_transport" output="screen" args="compressed in:=$(arg image_topic) raw out:=camera_out/image" />-->
 
